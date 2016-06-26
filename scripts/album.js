@@ -29,6 +29,23 @@
          { title: 'Wrong phone number', duration: '2:15'}
      ]
  };
+  // Another Example Album
+ var albumElvis = {
+     title: 'Elvis Presley',
+     artist: 'Elvis Presley',
+     label: 'RCA',
+     year: '1956',
+     albumArtUrl: 'assets/images/album_covers/xElvisPresleyLP.jpg',
+     songs: [
+         { title: 'Blue Suede Shoes', duration: '2:01' },
+         { title: 'I\'m Counting on You', duration: '2:25' },
+         { title: 'I Got A Woman', duration: '2:26'},
+         { title: 'One-Sided Love Affair', duration: '2:11' },
+         { title: 'I Love You Because', duration: '2:43'}
+     ]
+ };
+ var albumArray = [albumPicasso, albumMarconi, albumElvis]
+ 
   var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -40,7 +57,9 @@
  
      return template;
  };
+  var currentAlbum;
   var setCurrentAlbum = function(album) {
+     currentAlbum = album;
 
      var albumTitle = document.getElementsByClassName('album-view-title')[0];
      var albumArtist = document.getElementsByClassName('album-view-artist')[0];
@@ -59,7 +78,23 @@
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
  };
- 
+ var currentIndex;
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+     currentIndex = albumArray.indexOf(currentAlbum);
+     document.getElementsByClassName("album-cover-art")[0].addEventListener("click", toggleAlbum);
  };
+ 
+     var toggleAlbum = function(){
+         var nextIndex;
+         if (currentIndex >= albumArray.length -1){
+             nextIndex = 0;
+         }
+         else {
+             nextIndex = currentIndex + 1;
+         }
+         setCurrentAlbum(albumArray[nextIndex]);
+         currentIndex = nextIndex;
+     };
+ 
+ 
