@@ -23,7 +23,6 @@
 
    if (currentlyPlayingSongNumber !== songNumber) {
     $(this).html(pauseButtonTemplate);
-
     currentlyPlayingSongNumber = songNumber;
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
     updatePlayerBarSong();
@@ -158,11 +157,10 @@
 
  var currentlyPlayingSongNumber = null;
  var currentSongFromAlbum = null;
- var currentSoundFile = null;
- var currentVolume = 80;
 
  var $previousButton = $('.main-controls .previous');
  var $nextButton = $('.main-controls .next');
+ 
  $(document).ready(function() {
 
 
