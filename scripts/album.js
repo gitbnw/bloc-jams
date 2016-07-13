@@ -19,7 +19,7 @@
  };
 
  var getSongNumberCell = function(number) {
-  return $('.song-item-numer[data-song-number="' + number + '"]');
+  return $('.song-item-number[data-song-number="' + number + '"]');
  };
 
  var createSongRow = function(songNumber, songName, songLength) {
@@ -39,8 +39,8 @@
 
    if (currentlyPlayingSongNumber !== null) {
     console.log('a song is currently playing')
-     // var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
-    var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+    var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+
     currentlyPlayingCell.html(currentlyPlayingSongNumber);
    }
 
