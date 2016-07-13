@@ -1,10 +1,14 @@
  var togglePlayFromPlayerBar = function() {
-  console.log(currentSoundFile)
+  console.log('togglePlayFromPlayerBar called')
   var songNumberCell = getSongNumberCell(currentlyPlayingSongNumber)
-
+  var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+  
   if (currentSoundFile) {
+   console.log('current soundfile exists')
    if (currentSoundFile.isPaused()) {
-    songNumberCell.html(pauseButtonTemplate);
+    console.log('current soundfile is paused. play it - show the pause button on cell and player')
+    console.log(songNumberCell)
+    currentlyPlayingCell.html(pauseButtonTemplate);
 
    }
   }
