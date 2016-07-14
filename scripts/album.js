@@ -66,6 +66,7 @@
      $(this).html(playButtonTemplate);
      $('.main-controls .play-pause').html(playerBarPlayButton);
      currentSoundFile.pause();
+     currentlyPlayingSongNumber = null
     }
    }
 
