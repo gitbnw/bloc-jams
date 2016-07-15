@@ -1,20 +1,20 @@
  var setSong = function(songNumber) {
-  if (currentSoundFile) {
-   currentSoundFile.stop();
-  }
-  currentlyPlayingSongNumber = parseInt(songNumber);
-  currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
-  currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
-   formats: ['mp3'],
-   preload: true
-  });
-  setVolume(currentVolume);
+     if (currentSoundFile) {
+         currentSoundFile.stop();
+     }
+     currentlyPlayingSongNumber = parseInt(songNumber);
+     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+     currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+         formats: ['mp3'],
+         preload: true
+     });
+     setVolume(currentVolume);
  };
 
  var seek = function(time) {
-  if (currentSoundFile) {
-   currentSoundFile.setTime(time);
-  }
+     if (currentSoundFile) {
+         currentSoundFile.setTime(time);
+     }
  }
 var setCurrentTimeInPlayerBar = function(currentTime){
  $('.current-time').text(currentTime)
@@ -33,98 +33,97 @@ var filterTimeCode  = function(timeInSeconds){
 };
 
  var setVolume = function(volume) {
-  if (currentSoundFile) {
-   currentSoundFile.setVolume(volume);
-  }
+     if (currentSoundFile) {
+         currentSoundFile.setVolume(volume);
+     }
  };
 
  var getSongNumberCell = function(number) {
-  return $('.song-item-number[data-song-number="' + number + '"]');
+     return $('.song-item-number[data-song-number="' + number + '"]');
  };
 
  var createSongRow = function(songNumber, songName, songLength) {
 
-  var template =
-   '<tr class="album-view-song-item">' +
-   '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' +
-   '  <td class="song-item-title">' + songName + '</td>' +
-   '  <td class="song-item-duration">' + songLength + '</td>' +
-   '</tr>';
+     var template =
+         '<tr class="album-view-song-item">' +
+         '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' +
+         '  <td class="song-item-title">' + songName + '</td>' +
+         '  <td class="song-item-duration">' + songLength + '</td>' +
+         '</tr>';
 
-  var $row = $(template);
+     var $row = $(template);
 
-  var clickHandler = function() {
-   // console.log('clickhandler called')
-   var songNumber = parseInt($(this).attr('data-song-number'));
+     var clickHandler = function() {
+         // console.log('clickhandler called')
+         var songNumber = parseInt($(this).attr('data-song-number'));
 
-   if (currentlyPlayingSongNumber !== null) {
-    // console.log('a song is currently playing')
-    var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
-    currentlyPlayingCell.html(currentlyPlayingSongNumber);
-   }
+         if (currentlyPlayingSongNumber !== null) {
+             // console.log('a song is currently playing')
+             var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+             currentlyPlayingCell.html(currentlyPlayingSongNumber);
+         }
 
-   if (currentlyPlayingSongNumber !== songNumber) {
-    // console.log('this is not the song currently playing')
-    setSong(songNumber);
-    currentSoundFile.play();
-    updateSeekBarWhileSongPlays()
-    $(this).html(pauseButtonTemplate);
-    currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
-    var $volumeFill = $('.volume .fill');
-    var $volumeThumb = $('.volume .thumb');
-    $volumeFill.width(currentVolume + '%');
-    $volumeThumb.css({
-     left: currentVolume + '%'
-    });
+         if (currentlyPlayingSongNumber !== songNumber) {
+             // console.log('this is not the song currently playing')
+             setSong(songNumber);
+             currentSoundFile.play();
+             updateSeekBarWhileSongPlays()
+             $(this).html(pauseButtonTemplate);
+             currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+             var $volumeFill = $('.volume .fill');
+             var $volumeThumb = $('.volume .thumb');
+             $volumeFill.width(currentVolume + '%');
+             $volumeThumb.css({
+                 left: currentVolume + '%'
+             });
 
-    updatePlayerBarSong();
-   }
-   else if (currentlyPlayingSongNumber === songNumber) {
-    // console.log('this is the song currently playing')
-    if (currentSoundFile.isPaused()) {
-     // console.log('this song is paused. play song, show pause button')
-     $(this).html(pauseButtonTemplate);
-     $('.main-controls .play-pause').html(playerBarPauseButton);
-     currentSoundFile.play();
-     updateSeekBarWhileSongPlays()
-    }
-    else {
-     // console.log('this song is playing. will be paused and show play button')
-     $(this).html(playButtonTemplate);
-     $('.main-controls .play-pause').html(playerBarPlayButton);
-     currentSoundFile.pause();
-     currentlyPlayingSongNumber = null
-    }
-   }
+             updatePlayerBarSong();
+         } else if (currentlyPlayingSongNumber === songNumber) {
+             // console.log('this is the song currently playing')
+             if (currentSoundFile.isPaused()) {
+                 // console.log('this song is paused. play song, show pause button')
+                 $(this).html(pauseButtonTemplate);
+                 $('.main-controls .play-pause').html(playerBarPauseButton);
+                 currentSoundFile.play();
+                 updateSeekBarWhileSongPlays()
+             } else {
+                 // console.log('this song is playing. will be paused and show play button')
+                 $(this).html(playButtonTemplate);
+                 $('.main-controls .play-pause').html(playerBarPlayButton);
+                 currentSoundFile.pause();
+             }
+         }
 
-  };
+     };
 
-  var onHover = function(event) {
-   var songNumberCell = $(this).find('.song-item-number');
-   var songNumber = parseInt(songNumberCell.attr('data-song-number'));
+     var onHover = function(event) {
+         var songNumberCell = $(this).find('.song-item-number');
+         var songNumber = parseInt(songNumberCell.attr('data-song-number'));
 
-   if (songNumber !== currentlyPlayingSongNumber) {
-    songNumberCell.html(playButtonTemplate);
-   }
-  };
+         if (songNumber !== currentlyPlayingSongNumber) {
+             songNumberCell.html(playButtonTemplate);
+         }
+     };
 
-  var offHover = function(event) {
-   var songNumberCell = $(this).find('.song-item-number');
-   var songNumber = parseInt(songNumberCell.attr('data-song-number'));
+     var offHover = function(event) {
+         var songNumberCell = $(this).find('.song-item-number');
+         var songNumber = parseInt(songNumberCell.attr('data-song-number'));
 
 
-   if (songNumber !== currentlyPlayingSongNumber) {
-    songNumberCell.html(songNumber);
-   }
-  };
+         if (songNumber !== currentlyPlayingSongNumber) {
+             songNumberCell.html(songNumber);
+         }
+     };
 
-  $row.find('.song-item-number').click(clickHandler);
+     $row.find('.song-item-number').click(clickHandler);
 
-  $row.hover(onHover, offHover);
+     $row.hover(onHover, offHover);
 
-  return $row;
+     return $row;
+
  };
  var setCurrentAlbum = function(album) {
+
   currentAlbum = album;
   var $albumTitle = $('.album-view-title');
   var $albumArtist = $('.album-view-artist');
@@ -157,124 +156,135 @@ var filterTimeCode  = function(timeInSeconds){
   }
  };
  var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
-  var offsetXPercent = seekBarFillRatio * 100;
+     var offsetXPercent = seekBarFillRatio * 100;
 
-  offsetXPercent = Math.max(0, offsetXPercent);
-  offsetXPercent = Math.min(100, offsetXPercent);
+     offsetXPercent = Math.max(0, offsetXPercent);
+     offsetXPercent = Math.min(100, offsetXPercent);
 
-  var percentageString = offsetXPercent + '%';
-  $seekBar.find('.fill').width(percentageString);
-  $seekBar.find('.thumb').css({
-   left: percentageString
-  });
+     var percentageString = offsetXPercent + '%';
+     $seekBar.find('.fill').width(percentageString);
+     $seekBar.find('.thumb').css({
+         left: percentageString
+     });
  };
  var setupSeekBars = function() {
-  var $seekBars = $('.player-bar .seek-bar');
+     var $seekBars = $('.player-bar .seek-bar');
 
-  $seekBars.click(function(event) {
+     $seekBars.click(function(event) {
 
-   var offsetX = event.pageX - $(this).offset().left;
-   var barWidth = $(this).width();
-   var seekBarFillRatio = offsetX / barWidth;
-   var $parent = $(this).parent()
-   var $parentClass = $(this).parent().attr("class");
+         var offsetX = event.pageX - $(this).offset().left;
+         var barWidth = $(this).width();
+         var seekBarFillRatio = offsetX / barWidth;
+         var $parent = $(this).parent()
+         var $parentClass = $(this).parent().attr("class");
 
+         if ($(this).parent().attr('class') == 'seek-control') {
+             seek(seekBarFillRatio * currentSoundFile.getDuration());
+         } else {
+             setVolume(seekBarFillRatio * 100);
+         }
 
-   updateSeekPercentage($(this), seekBarFillRatio);
+         updateSeekPercentage($(this), seekBarFillRatio);
 
-   if ($parentClass === "seek-control") {
-    seek(seekBarFillRatio * currentSoundFile.getDuration());
-   }
+         // if ($parentClass === "seek-control") {
+         //  seek(seekBarFillRatio * currentSoundFile.getDuration());
+         // }
 
-   if ($parent.hasClass("volume")) {
-    setVolume(seekBarFillRatio * 100);
-   }
+         // if ($parent.hasClass("volume")) {
+         //  setVolume(seekBarFillRatio * 100);
+         // }
 
-  });
+     });
 
-  $seekBars.find('.thumb').mousedown(function(event) {
+     $seekBars.find('.thumb').mousedown(function(event) {
 
-   var $seekBar = $(this).parent();
-   var $parent = $(this).parent()
-   var $parentClass = $(this).parent().attr("class");
+         var $seekBar = $(this).parent();
+         var $parent = $(this).parent()
+         var $parentClass = $(this).parent().attr("class");
 
-   $(document).bind('mousemove.thumb', function(event) {
-    var offsetX = event.pageX - $seekBar.offset().left;
-    var barWidth = $seekBar.width();
-    var seekBarFillRatio = offsetX / barWidth;
+         $(document).bind('mousemove.thumb', function(event) {
+             var offsetX = event.pageX - $seekBar.offset().left;
+             var barWidth = $seekBar.width();
+             var seekBarFillRatio = offsetX / barWidth;
 
-    if ($parentClass === "seek-control") {
-     seek(seekBarFillRatio * currentSoundFile.getDuration());
-    }
+             if ($seekBar.parent().attr('class') == 'seek-control') {
+                 seek(seekBarFillRatio * currentSoundFile.getDuration());
+             } else {
+                 setVolume(seekBarFillRatio);
+             }
 
-    if ($parent.hasClass("volume")) {
-     setVolume(seekBarFillRatio * 100);
-    }
+             // if ($parentClass === "seek-control") {
+             //  seek(seekBarFillRatio * currentSoundFile.getDuration());
+             // }
 
-    updateSeekPercentage($seekBar, seekBarFillRatio);
-   });
+             // if ($parent.hasClass("volume")) {
+             //  setVolume(seekBarFillRatio * 100);
+             // }
 
-   $(document).bind('mouseup.thumb', function() {
-    $(document).unbind('mousemove.thumb');
-    $(document).unbind('mouseup.thumb');
-   });
-  });
+             updateSeekPercentage($seekBar, seekBarFillRatio);
+         });
+
+         $(document).bind('mouseup.thumb', function() {
+             $(document).unbind('mousemove.thumb');
+             $(document).unbind('mouseup.thumb');
+         });
+     });
  };
  var trackIndex = function(album, song) {
-  return album.songs.indexOf(song);
+     return album.songs.indexOf(song);
  };
 
  var nextSong = function() {
 
-  var getLastSongNumber = function(index) {
-   return index == 0 ? currentAlbum.songs.length : index;
-  };
+     var getLastSongNumber = function(index) {
+         return index == 0 ? currentAlbum.songs.length : index;
+     };
 
-  var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-  currentSongIndex++;
+     var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+     currentSongIndex++;
 
-  if (currentSongIndex >= currentAlbum.songs.length) {
-   currentSongIndex = 0;
-  }
+     if (currentSongIndex >= currentAlbum.songs.length) {
+         currentSongIndex = 0;
+     }
 
-  setSong(currentSongIndex + 1);
-  currentSoundFile.play();
-  updatePlayerBarSong();
+     setSong(currentSongIndex + 1);
+     currentSoundFile.play();
+     updatePlayerBarSong();
 
-  var lastSongNumber = getLastSongNumber(currentSongIndex);
-  var $nextSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-  var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+     var lastSongNumber = getLastSongNumber(currentSongIndex);
+     var $nextSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+     var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
 
-  $nextSongNumberCell.html(pauseButtonTemplate);
-  $lastSongNumberCell.html(lastSongNumber);
+     $nextSongNumberCell.html(pauseButtonTemplate);
+     $lastSongNumberCell.html(lastSongNumber);
 
  };
 
  var previousSong = function() {
 
-  var getLastSongNumber = function(index) {
-   return index == (currentAlbum.songs.length - 1) ? 1 : index + 2;
-  };
+     var getLastSongNumber = function(index) {
+         return index == (currentAlbum.songs.length - 1) ? 1 : index + 2;
+     };
 
-  var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+     var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
 
-  currentSongIndex--;
+     currentSongIndex--;
 
-  if (currentSongIndex < 0) {
-   currentSongIndex = currentAlbum.songs.length - 1;
-  }
+     if (currentSongIndex < 0) {
+         currentSongIndex = currentAlbum.songs.length - 1;
+     }
 
-  setSong(currentSongIndex + 1);
-  currentSoundFile.play();
-  updatePlayerBarSong();
+     setSong(currentSongIndex + 1);
+     currentSoundFile.play();
+     updatePlayerBarSong();
 
 
-  var lastSongNumber = getLastSongNumber(currentSongIndex);
-  var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
-  var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
+     var lastSongNumber = getLastSongNumber(currentSongIndex);
+     var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+     var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
 
-  $previousSongNumberCell.html(pauseButtonTemplate);
-  $lastSongNumberCell.html(lastSongNumber);
+     $previousSongNumberCell.html(pauseButtonTemplate);
+     $lastSongNumberCell.html(lastSongNumber);
 
  };
 
@@ -304,9 +314,9 @@ var filterTimeCode  = function(timeInSeconds){
  $(document).ready(function() {
 
 
-  setCurrentAlbum(albumPicasso);
-  setupSeekBars();
-  $previousButton.click(previousSong);
-  $nextButton.click(nextSong);
+     setCurrentAlbum(albumPicasso);
+     setupSeekBars();
+     $previousButton.click(previousSong);
+     $nextButton.click(nextSong);
 
  });
